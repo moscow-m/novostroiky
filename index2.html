@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Новостройки Москвы — подбор квартир под ключ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0B1626;          /* near-black navy */
+  --deep:#0F1F35;         /* deep navy surface */
+  --emerald:#1B3A63;      /* primary (navy) */
+  --emerald-soft:#244B7E;
+  --jade:#3A6DA6;
+  --gold:#B89150;         /* premium accent */
+  --gold-bright:#D4B274;
+  --champagne:#ECE6DA;    /* light text on dark */
+  --paper:#FBF9F4;        /* warm ivory */
+  --paper-2:#F2EFE8;
+  --line:rgba(11,22,38,.12);
+  --line-gold:rgba(184,145,80,.34);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--paper);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+h1,h2,h3{font-family:'Cormorant Garamond',serif;font-weight:600;line-height:1.06;letter-spacing:-.005em}
+a{color:inherit;text-decoration:none}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:50;background:rgba(251,249,244,.84);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:76px}
+.logo{display:flex;align-items:center;gap:11px;font-family:'Cormorant Garamond',serif;font-size:23px;font-weight:700;letter-spacing:-.01em;line-height:1.05}
+.logo small{display:block;font-family:'Inter',sans-serif;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-top:1px}
+.logo-mark{width:30px;height:30px;display:block;flex:0 0 auto}
+.nav-links{display:flex;gap:36px;font-size:15px;color:var(--emerald)}
+.nav-links a{transition:opacity .2s}
+.nav-links a:hover{opacity:.6}
+.nav-cta{background:var(--emerald);color:var(--champagne);padding:12px 24px;border-radius:2px;font-size:14px;font-weight:500;letter-spacing:.02em;transition:background .2s;border:1px solid var(--emerald)}
+.nav-cta:hover{background:var(--emerald-soft)}
+@media(max-width:860px){.nav-links{display:none}}
+
+/* HERO */
+.hero{position:relative;overflow:hidden;background:var(--deep);color:var(--champagne)}
+.hero::before{content:"";position:absolute;inset:0;background:
+  radial-gradient(120% 80% at 85% -10%,rgba(184,145,80,.16),transparent 55%),
+  radial-gradient(80% 60% at 0% 110%,rgba(58,109,166,.22),transparent 60%);pointer-events:none}
+.hero-grid{position:relative;display:grid;grid-template-columns:1.12fr .88fr;gap:64px;align-items:center;padding:96px 0 104px}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-bright);margin-bottom:28px;font-weight:600}
+.eyebrow::before{content:"";width:30px;height:1px;background:var(--gold)}
+.hero h1{font-size:clamp(44px,6.4vw,74px);margin-bottom:26px;color:#fff;font-weight:600}
+.hero h1 em{font-style:italic;color:var(--gold-bright)}
+.hero p.lead{font-size:18px;color:rgba(239,231,214,.78);max-width:480px;margin-bottom:38px}
+.hero-actions{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.btn-primary{background:var(--gold);color:var(--ink);padding:16px 34px;border-radius:2px;font-size:15px;font-weight:600;letter-spacing:.02em;transition:transform .2s,background .2s;border:none;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+.btn-primary:hover{background:var(--gold-bright);transform:translateY(-1px)}
+.btn-ghost{color:var(--champagne);font-size:15px;font-weight:500;display:inline-flex;align-items:center;gap:8px;border-bottom:1px solid transparent;padding-bottom:2px}
+.btn-ghost:hover{border-color:var(--gold)}
+
+.tower{position:relative;display:flex;flex-direction:column;gap:9px}
+.floor{background:rgba(251,249,244,.04);border:1px solid rgba(239,231,214,.14);border-radius:3px;padding:17px 21px;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(2px);animation:rise .7s cubic-bezier(.2,.7,.3,1) both}
+.floor:nth-child(1){animation-delay:.05s}.floor:nth-child(2){animation-delay:.15s}.floor:nth-child(3){animation-delay:.25s}.floor:nth-child(4){animation-delay:.35s}
+.floor.accent{background:linear-gradient(100deg,var(--gold),var(--gold-bright));color:var(--ink);border-color:transparent}
+.floor .f-seg{font-size:13px;color:rgba(239,231,214,.6);letter-spacing:.03em}
+.floor.accent .f-seg{color:rgba(11,22,38,.66)}
+.floor .f-price{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:600}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:860px){.hero-grid{grid-template-columns:1fr;gap:48px;padding:72px 0 80px}}
+@media(prefers-reduced-motion:reduce){.floor{animation:none}}
+
+/* TRUST */
+.trust{border-bottom:1px solid var(--line);padding:40px 0;background:var(--paper-2)}
+.trust-in{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.stat{position:relative;padding-left:20px}
+.stat::before{content:"";position:absolute;left:0;top:4px;bottom:4px;width:2px;background:var(--gold)}
+.stat .n{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:600;color:var(--emerald);line-height:1}
+.stat .l{font-size:14px;color:#43564e;margin-top:8px}
+@media(max-width:680px){.trust-in{grid-template-columns:1fr 1fr;gap:30px}}
+
+section.block{padding:104px 0}
+.sec-head{max-width:660px;margin-bottom:60px}
+.sec-head .eyebrow{color:var(--gold);margin-bottom:18px}
+.sec-head .eyebrow::before{background:var(--gold)}
+.sec-head h2{font-size:clamp(32px,4.4vw,50px);margin-bottom:18px;color:var(--ink)}
+.sec-head p{font-size:18px;color:#43564e}
+
+/* STEPS */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.step{background:var(--paper);padding:36px 28px;transition:background .25s}
+.step:hover{background:#fff}
+.step .num{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--gold);letter-spacing:.04em;margin-bottom:22px;display:block;font-weight:600}
+.step h3{font-size:24px;margin-bottom:10px;color:var(--ink)}
+.step p{font-size:15px;color:#43564e}
+@media(max-width:860px){.steps{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.steps{grid-template-columns:1fr}}
+
+/* SEGMENTS */
+.seg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.seg{background:#fff;border:1px solid var(--line);border-radius:4px;padding:34px;position:relative;overflow:hidden;transition:transform .25s,box-shadow .25s,border-color .25s}
+.seg:hover{transform:translateY(-4px);box-shadow:0 22px 48px -28px rgba(11,22,38,.4);border-color:var(--line-gold)}
+.seg .tag{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:600}
+.seg h3{font-size:30px;margin:14px 0 6px;color:var(--ink)}
+.seg .range{font-family:'Cormorant Garamond',serif;font-size:21px;font-weight:600;color:var(--emerald);margin-bottom:20px}
+.seg ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.seg li{font-size:15px;color:#43564e;padding-left:22px;position:relative}
+.seg li::before{content:"";position:absolute;left:0;top:8px;width:7px;height:7px;border-radius:50%;background:var(--gold)}
+@media(max-width:860px){.seg-grid{grid-template-columns:1fr}}
+
+/* WHY */
+.why{background:var(--ink);color:var(--champagne);border-radius:6px;padding:68px 60px;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;position:relative;overflow:hidden}
+.why::before{content:"";position:absolute;inset:0;background:radial-gradient(70% 90% at 100% 0%,rgba(184,145,80,.14),transparent 60%);pointer-events:none}
+.why h2{font-size:clamp(30px,4vw,44px);color:#fff;margin-bottom:18px;position:relative}
+.why .why-lead{color:rgba(239,231,214,.72);font-size:17px;position:relative}
+.why-list{display:flex;flex-direction:column;gap:24px;position:relative}
+.why-item{display:flex;gap:16px;align-items:flex-start}
+.why-item .chk{flex:0 0 auto;width:28px;height:28px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;margin-top:2px}
+.why-item h4{font-family:'Inter',sans-serif;font-size:16px;font-weight:600;margin-bottom:3px;color:#fff}
+.why-item p{font-size:14px;color:rgba(239,231,214,.62)}
+@media(max-width:860px){.why{grid-template-columns:1fr;padding:48px 30px;gap:36px}}
+
+/* FORM */
+.cta-block{padding:104px 0}
+.cta-card{background:#fff;border:1px solid var(--line);border-radius:6px;overflow:hidden;display:grid;grid-template-columns:.9fr 1.1fr;box-shadow:0 30px 70px -50px rgba(11,22,38,.5)}
+.cta-side{background:var(--emerald);color:var(--champagne);padding:58px 46px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
+.cta-side::before{content:"";position:absolute;inset:0;background:radial-gradient(80% 70% at 110% -10%,rgba(184,145,80,.2),transparent 60%);pointer-events:none}
+.cta-side h2{color:#fff;font-size:38px;margin-bottom:16px;position:relative}
+.cta-side p{color:rgba(239,231,214,.8);font-size:16px;position:relative}
+.cta-side .promise{margin-top:38px;display:flex;flex-direction:column;gap:15px;position:relative}
+.cta-side .promise div{display:flex;gap:11px;align-items:center;font-size:14px;color:rgba(239,231,214,.92)}
+.cta-side .promise span{color:var(--gold-bright);font-weight:600}
+.cta-form{padding:50px 46px;display:flex;flex-direction:column}
+.field{margin-bottom:18px}
+.field label{display:block;font-size:13px;color:var(--emerald);margin-bottom:7px;font-weight:500}
+.field label .req{color:var(--gold)}
+.field input,.field select{width:100%;padding:14px 16px;border:1px solid var(--line);border-radius:3px;font-family:inherit;font-size:15px;background:var(--paper);color:var(--ink);transition:border .2s,box-shadow .2s}
+.field input:focus,.field select:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,145,80,.16)}
+.field input.invalid{border-color:#b4452f;box-shadow:0 0 0 3px rgba(180,69,47,.12)}
+.err{display:none;font-size:12.5px;color:#b4452f;margin-top:6px}
+.err.show{display:block}
+.cta-form .btn-primary{margin-top:8px;width:100%}
+.cta-form .btn-primary[disabled]{opacity:.55;cursor:not-allowed;transform:none}
+.fineprint{font-size:12px;color:#8a9590;text-align:center;margin-top:14px}
+.form-ok{display:none;text-align:center;padding:36px 10px;margin:auto 0}
+.form-ok.show{display:block}
+.form-ok .ok-mark{width:58px;height:58px;border-radius:50%;background:var(--paper-2);display:flex;align-items:center;justify-content:center;margin:0 auto 18px}
+.form-ok h3{font-size:28px;margin-bottom:8px;color:var(--ink)}
+.form-ok p{color:#43564e;font-size:15px}
+.form-fail{display:none;margin-top:14px;font-size:13px;color:#b4452f;text-align:center}
+.form-fail.show{display:block}
+@media(max-width:860px){.cta-card{grid-template-columns:1fr}.cta-side{padding:42px 28px}.cta-form{padding:38px 28px}}
+
+/* FOOTER */
+footer{border-top:1px solid var(--line);padding:52px 0 42px;background:var(--paper-2)}
+.foot-in{display:flex;justify-content:space-between;align-items:flex-start;gap:32px;flex-wrap:wrap}
+.foot-col p,.foot-col a{font-size:14px;color:#43564e;display:block;margin-bottom:9px}
+.foot-col a{transition:color .2s}
+.foot-col a:hover{color:var(--gold)}
+.foot-col h5{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:15px;font-weight:600}
+.foot-in .logo{margin-bottom:14px}
+.copy{margin-top:42px;padding-top:24px;border-top:1px solid var(--line);font-size:13px;color:#8a9590}
+.foot-addr{margin-top:10px;font-size:14px;color:#43564e;display:flex;gap:8px;align-items:flex-start}
+.foot-addr svg{flex:0 0 auto;margin-top:3px}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.2,.7,.3,1),transform .7s cubic-bezier(.2,.7,.3,1)}
+.reveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+.mort-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}
+@media(max-width:860px){.mort-grid{grid-template-columns:1fr;gap:22px}}
+.calc{background:var(--ink);color:var(--champagne);border-radius:6px;padding:40px 38px;position:relative;overflow:hidden}
+.calc::before{content:"";position:absolute;inset:0;background:radial-gradient(75% 80% at 110% -10%,rgba(184,145,80,.16),transparent 60%);pointer-events:none}
+.calc h3{color:#fff;font-size:26px;margin-bottom:4px;position:relative}
+.calc .calc-sub{color:rgba(236,230,218,.6);font-size:14px;margin-bottom:26px;position:relative}
+.calc-field{margin-bottom:22px;position:relative}
+.calc-field .row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+.calc-field label{font-size:14px;color:rgba(236,230,218,.8)}
+.calc-field .val{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold-bright);font-weight:600}
+.calc-field input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:4px;border-radius:4px;background:rgba(236,230,218,.18);outline:none}
+.calc-field input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:20px;height:20px;border-radius:50%;background:var(--gold);cursor:pointer;border:3px solid var(--ink);box-shadow:0 0 0 1px var(--gold)}
+.calc-field input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--gold);cursor:pointer;border:3px solid var(--ink)}
+.calc-field .scale{display:flex;justify-content:space-between;font-size:11px;color:rgba(236,230,218,.4);margin-top:7px}
+.prog-choose{display:flex;flex-wrap:wrap;gap:8px;position:relative}
+.prog-choose button{flex:1 1 auto;min-width:86px;padding:10px;border-radius:4px;border:1px solid rgba(236,230,218,.2);background:transparent;color:rgba(236,230,218,.85);font-family:inherit;font-size:13px;cursor:pointer;transition:all .2s;text-align:center}
+.prog-choose button .r{display:block;font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--gold-bright);font-weight:600;margin-top:2px}
+.prog-choose button.active{background:var(--gold);border-color:var(--gold);color:var(--ink)}
+.prog-choose button.active .r{color:var(--ink)}
+.calc-out{margin-top:28px;padding-top:24px;border-top:1px solid rgba(236,230,218,.14);position:relative}
+.calc-out .pay-label{font-size:13px;color:rgba(236,230,218,.6);margin-bottom:4px}
+.calc-out .pay{font-family:'Cormorant Garamond',serif;font-size:46px;font-weight:600;color:#fff;line-height:1}
+.calc-out .pay span{font-size:22px;color:var(--gold-bright)}
+.calc-rows{display:flex;gap:26px;margin-top:18px;flex-wrap:wrap}
+.calc-rows div{font-size:13px;color:rgba(236,230,218,.7)}
+.calc-rows div b{display:block;font-family:'Cormorant Garamond',serif;font-size:19px;color:var(--champagne);font-weight:600;margin-top:2px}
+.calc-note{font-size:11.5px;color:rgba(236,230,218,.45);margin-top:20px;line-height:1.5;position:relative}
+.progs{display:flex;flex-direction:column;gap:14px}
+.prog-card{background:#fff;border:1px solid var(--line);border-radius:6px;padding:22px 24px;transition:transform .25s,box-shadow .25s,border-color .25s}
+.prog-card:hover{transform:translateY(-3px);box-shadow:0 18px 40px -26px rgba(11,22,38,.4);border-color:var(--line-gold)}
+.prog-head{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:12px}
+.prog-bank{display:flex;align-items:center;gap:12px}
+.prog-logo{width:42px;height:42px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-weight:700;font-size:18px;color:#fff;flex:0 0 auto}
+.prog-name{font-size:16px;font-weight:600;color:var(--ink)}
+.prog-name small{display:block;font-family:'Inter',sans-serif;font-size:12px;font-weight:400;color:#7a8590;margin-top:1px}
+.prog-rate{text-align:right;flex:0 0 auto}
+.prog-rate .rate-n{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:600;color:var(--emerald);line-height:1}
+.prog-rate .rate-l{font-size:11px;color:#7a8590}
+.prog-meta{display:flex;gap:18px;flex-wrap:wrap;padding-top:12px;border-top:1px solid var(--line)}
+.prog-meta div{font-size:12.5px;color:#5a6770}
+.prog-meta div b{display:block;color:var(--ink);font-size:14px;font-weight:600;margin-top:1px}
+.progs-note{font-size:12px;color:#8a9590;margin-top:6px;line-height:1.55}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-in">
+    <a href="#" class="logo">
+      <svg class="logo-mark" viewBox="0 0 30 30" fill="none">
+        <rect x="3.5" y="12.5" width="23" height="14.5" rx="1" stroke="#1B3A63" stroke-width="1.6"/>
+        <path d="M3.5 12.5L15 3L26.5 12.5" stroke="#1B3A63" stroke-width="1.6" stroke-linejoin="round"/>
+        <rect x="12.8" y="18" width="4.4" height="9" fill="#B89150"/>
+      </svg>
+      <span>Новостройки Москвы<small>Подбор квартир</small></span>
+    </a>
+    <div class="nav-links">
+      <a href="#how">Как работаем</a>
+      <a href="#segments">Сегменты</a>
+      <a href="#mortgage">Ипотека</a>
+      <a href="#why">Почему мы</a>
+      <a href="#form">Контакты</a>
+    </div>
+    <a href="#form" class="nav-cta">Получить подбор</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">Новостройки Москвы и области</span>
+      <h1>Подберём квартиру, <em>которой можно доверять</em></h1>
+      <p class="lead">Анализируем весь рынок новостроек — от стартовых студий до резиденций бизнес-класса. Без давления и скрытых комиссий. Вы платите застройщику ту же цену, что и напрямую.</p>
+      <div class="hero-actions">
+        <a href="#form" class="btn-primary">Получить подбор за 24 часа</a>
+        <a href="#how" class="btn-ghost">Как это работает →</a>
+      </div>
+    </div>
+    <div class="tower" aria-hidden="true">
+      <div class="floor"><span class="f-seg">Бизнес · 2-комн</span><span class="f-price">от 18 млн</span></div>
+      <div class="floor"><span class="f-seg">Комфорт · 1-комн</span><span class="f-price">от 9,2 млн</span></div>
+      <div class="floor accent"><span class="f-seg">Ваш подбор</span><span class="f-price">3–5 ЖК</span></div>
+      <div class="floor"><span class="f-seg">Эконом · студия</span><span class="f-price">от 6,4 млн</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="trust">
+  <div class="wrap trust-in">
+    <div class="stat"><div class="n">320+</div><div class="l">новостроек в базе</div></div>
+    <div class="stat"><div class="n">0 ₽</div><div class="l">комиссия для вас</div></div>
+    <div class="stat"><div class="n">24 ч</div><div class="l">первая подборка</div></div>
+    <div class="stat"><div class="n">8 лет</div><div class="l">на рынке Москвы</div></div>
+  </div>
+</div>
+
+<section class="block reveal" id="how">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Процесс</span>
+      <h2>Четыре шага до ключей</h2>
+      <p>Понятный путь без сюрпризов. На каждом этапе вы знаете, что происходит и почему.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><span class="num">Шаг 01</span><h3>Бриф</h3><p>Обсуждаем бюджет, район, сроки и приоритеты. 15 минут разговора экономят недели поисков.</p></div>
+      <div class="step"><span class="num">Шаг 02</span><h3>Подборка</h3><p>Готовим 3–5 проверенных ЖК с честным сравнением цен, рисков и перспектив.</p></div>
+      <div class="step"><span class="num">Шаг 03</span><h3>Показы</h3><p>Организуем визиты и переговоры с застройщиком. Проверяем документы и условия за вас.</p></div>
+      <div class="step"><span class="num">Шаг 04</span><h3>Сделка</h3><p>Сопровождаем ДДУ, ипотеку и регистрацию. Остаёмся на связи до получения ключей.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block reveal" id="segments" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Весь спектр рынка</span>
+      <h2>От первой квартиры до инвестиций</h2>
+      <p>Работаем со всеми классами новостроек. Подбираем не «что подороже», а что подходит именно вам.</p>
+    </div>
+    <div class="seg-grid">
+      <div class="seg">
+        <span class="tag">Эконом · Комфорт</span>
+        <h3>Первое жильё</h3>
+        <div class="range">от 6,4 млн ₽</div>
+        <ul><li>Студии и 1-комнатные у метро</li><li>Программы господдержки и IT-ипотека</li><li>Сроки сдачи и надёжность застройщика</li></ul>
+      </div>
+      <div class="seg">
+        <span class="tag">Бизнес</span>
+        <h3>Для семьи и роста</h3>
+        <div class="range">от 14 млн ₽</div>
+        <ul><li>Просторные планировки и видовые этажи</li><li>Закрытая территория, школы рядом</li><li>Баланс цены, локации и ликвидности</li></ul>
+      </div>
+      <div class="seg">
+        <span class="tag">Премиум · Инвестиции</span>
+        <h3>Капитал в метрах</h3>
+        <div class="range">от 28 млн ₽</div>
+        <ul><li>Объекты с потенциалом роста цены</li><li>Расчёт доходности и сроков окупаемости</li><li>Доступ к стартам продаж до публики</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MORTGAGE -->
+<section class="block reveal" id="mortgage" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Ипотека</span>
+      <h2>Рассчитайте платёж и подберите программу</h2>
+      <p>Прикиньте ежемесячный платёж по актуальным ставкам, а мы поможем выбрать банк и оформить заявку — бесплатно.</p>
+    </div>
+    <div class="mort-grid">
+
+      <!-- Калькулятор -->
+      <div class="calc">
+        <h3>Ипотечный калькулятор</h3>
+        <div class="calc-sub">Предварительный расчёт. Итоговые условия подтверждает банк.</div>
+
+        <div class="calc-field">
+          <div class="row"><label>Стоимость жилья</label><span class="val" id="vPrice">12 000 000 ₽</span></div>
+          <input type="range" id="price" min="3000000" max="60000000" step="100000" value="12000000">
+          <div class="scale"><span>3 млн</span><span>60 млн</span></div>
+        </div>
+
+        <div class="calc-field">
+          <div class="row"><label>Первоначальный взнос</label><span class="val" id="vDown">2 400 000 ₽ · 20%</span></div>
+          <input type="range" id="down" min="0" max="90" step="1" value="20">
+          <div class="scale"><span>0%</span><span>90%</span></div>
+        </div>
+
+        <div class="calc-field">
+          <div class="row"><label>Срок кредита</label><span class="val" id="vTerm">20 лет</span></div>
+          <input type="range" id="term" min="1" max="30" step="1" value="20">
+          <div class="scale"><span>1 год</span><span>30 лет</span></div>
+        </div>
+
+        <div class="calc-field">
+          <div class="row"><label>Программа</label><span class="val" id="vRate">6,0%</span></div>
+          <div class="prog-choose" id="progChoose">
+            <button data-rate="6"  data-cap="12000000" class="active">Семейная<span class="r">6%</span></button>
+            <button data-rate="6"  data-cap="9000000">IT*<span class="r">6%</span></button>
+            <button data-rate="19" data-cap="0">Рыночная<span class="r">от 19%</span></button>
+          </div>
+        </div>
+
+        <div class="calc-out">
+          <div class="pay-label">Ежемесячный платёж</div>
+          <div class="pay" id="payout">— <span>₽/мес</span></div>
+          <div class="calc-rows">
+            <div>Сумма кредита<b id="loanOut">—</b></div>
+            <div>Переплата за весь срок<b id="overOut">—</b></div>
+          </div>
+        </div>
+
+        <div class="calc-note" id="calcNote">
+          * IT-ипотека не действует для жилья в Москве и Санкт-Петербурге — подходит для области. По семейной и IT-программам льготная ставка применяется к сумме в пределах лимита; превышение считается по рыночной ставке (в расчёте упрощено).
+        </div>
+      </div>
+
+      <!-- Программы банков -->
+      <div>
+        <div class="progs">
+
+          <div class="prog-card">
+            <div class="prog-head">
+              <div class="prog-bank">
+                <div class="prog-logo" style="background:#2B7A78">ДР</div>
+                <div class="prog-name">Дом.РФ<small>Семейная ипотека</small></div>
+              </div>
+              <div class="prog-rate"><div class="rate-n">6%</div><div class="rate-l">годовых</div></div>
+            </div>
+            <div class="prog-meta">
+              <div>Взнос<b>от 20%</b></div>
+              <div>Сумма<b>до 12 млн ₽</b></div>
+              <div>Срок<b>до 30 лет</b></div>
+            </div>
+          </div>
+
+          <div class="prog-card">
+            <div class="prog-head">
+              <div class="prog-bank">
+                <div class="prog-logo" style="background:#1A9F29">С</div>
+                <div class="prog-name">Сбербанк<small>Семейная ипотека</small></div>
+              </div>
+              <div class="prog-rate"><div class="rate-n">6%</div><div class="rate-l">годовых</div></div>
+            </div>
+            <div class="prog-meta">
+              <div>Взнос<b>от 20%</b></div>
+              <div>Сумма<b>до 12 млн ₽</b></div>
+              <div>Срок<b>до 30 лет</b></div>
+            </div>
+          </div>
+
+          <div class="prog-card">
+            <div class="prog-head">
+              <div class="prog-bank">
+                <div class="prog-logo" style="background:#EF3124">А</div>
+                <div class="prog-name">Альфа-Банк<small>Семейная ипотека</small></div>
+              </div>
+              <div class="prog-rate"><div class="rate-n">6%</div><div class="rate-l">годовых</div></div>
+            </div>
+            <div class="prog-meta">
+              <div>Взнос<b>от 20%</b></div>
+              <div>Сумма<b>до 12 млн ₽</b></div>
+              <div>Срок<b>до 30 лет</b></div>
+            </div>
+          </div>
+
+          <div class="prog-card">
+            <div class="prog-head">
+              <div class="prog-bank">
+                <div class="prog-logo" style="background:#1B3A63">Р</div>
+                <div class="prog-name">Рыночная ипотека<small>Базовые программы банков</small></div>
+              </div>
+              <div class="prog-rate"><div class="rate-n">~19%</div><div class="rate-l">от, годовых</div></div>
+            </div>
+            <div class="prog-meta">
+              <div>Взнос<b>от 20%</b></div>
+              <div>Ставка зависит от<b>ключевой ЦБ</b></div>
+              <div>Срок<b>до 30 лет</b></div>
+            </div>
+          </div>
+
+        </div>
+        <p class="progs-note">Ставки указаны как ориентир на июнь 2026 года и могут отличаться от индивидуального предложения банка. Семейная ипотека — для семей с детьми, лимит для Москвы и области до 12 млн ₽, программа действует до 31 декабря 2030 года. Точные условия уточняйте при подаче заявки — мы поможем сравнить и оформить.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="block reveal" id="why" style="padding-top:0">
+  <div class="wrap">
+    <div class="why">
+      <div>
+        <span class="eyebrow" style="color:var(--gold-bright)">Почему мы</span>
+        <h2>Мы на вашей стороне, а не застройщика</h2>
+        <p class="why-lead">Наша комиссия приходит от застройщика и не влияет на вашу цену. Поэтому мы свободны рекомендовать то, что действительно выгодно вам.</p>
+      </div>
+      <div class="why-list">
+        <div class="why-item"><span class="chk"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2.5 7L5 9.5L10.5 3.5" stroke="#0B1626" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><h4>Честное сравнение</h4><p>Показываем минусы объектов так же открыто, как плюсы.</p></div></div>
+        <div class="why-item"><span class="chk"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2.5 7L5 9.5L10.5 3.5" stroke="#0B1626" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><h4>Проверка застройщика</h4><p>История сдачи, эскроу-счета, разрешительная документация.</p></div></div>
+        <div class="why-item"><span class="chk"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2.5 7L5 9.5L10.5 3.5" stroke="#0B1626" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><h4>Сопровождение сделки</h4><p>Юрист проверяет ДДУ. Помогаем с ипотекой и регистрацией.</p></div></div>
+        <div class="why-item"><span class="chk"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2.5 7L5 9.5L10.5 3.5" stroke="#0B1626" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><h4>Без навязывания</h4><p>Не торопим. Решение остаётся за вами — в комфортном темпе.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-block reveal" id="form">
+  <div class="wrap">
+    <div class="cta-card">
+      <div class="cta-side">
+        <div>
+          <h2>Расскажите, что ищете</h2>
+          <p>Заполните короткую форму — пришлём первую подборку из 3–5 новостроек в течение 24 часов.</p>
+        </div>
+        <div class="promise">
+          <div><span>✓</span> Подбор и консультация — бесплатно</div>
+          <div><span>✓</span> Цена застройщика без наценки</div>
+          <div><span>✓</span> Не передаём контакты третьим лицам</div>
+          <div><span>✓</span> Офис: Москва, Страстной б-р, 6с1</div>
+        </div>
+      </div>
+      <div class="cta-form">
+        <div id="formInner">
+          <div class="field">
+            <label for="nm">Как к вам обращаться <span class="req">*</span></label>
+            <input id="nm" type="text" placeholder="Имя" autocomplete="name">
+            <div class="err" id="errNm">Пожалуйста, укажите имя</div>
+          </div>
+          <div class="field">
+            <label for="ph">Телефон <span class="req">*</span></label>
+            <input id="ph" type="tel" placeholder="+7 (___) ___-__-__" autocomplete="tel">
+            <div class="err" id="errPh">Укажите корректный номер телефона</div>
+          </div>
+          <div class="field">
+            <label for="bg">Бюджет</label>
+            <select id="bg">
+              <option>До 8 млн ₽</option>
+              <option>8–15 млн ₽</option>
+              <option>15–28 млн ₽</option>
+              <option>От 28 млн ₽</option>
+              <option>Пока не определился</option>
+            </select>
+          </div>
+          <button class="btn-primary" id="submitBtn">Получить подборку</button>
+          <p class="fineprint">Нажимая кнопку, вы соглашаетесь с обработкой персональных данных</p>
+          <div class="form-fail" id="formFail">Не удалось отправить. Позвоните или напишите нам в Telegram — контакты ниже.</div>
+        </div>
+        <div class="form-ok" id="formOk">
+          <div class="ok-mark"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M6.5 14.5L11.5 19.5L21.5 8" stroke="#1B3A63" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h3>Заявка принята</h3>
+          <p>Свяжемся с вами в течение дня и пришлём первую подборку новостроек.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-in">
+      <div class="foot-col" style="max-width:300px">
+        <a href="#" class="logo">
+          <svg class="logo-mark" viewBox="0 0 30 30" fill="none">
+            <rect x="3.5" y="12.5" width="23" height="14.5" rx="1" stroke="#1B3A63" stroke-width="1.6"/>
+            <path d="M3.5 12.5L15 3L26.5 12.5" stroke="#1B3A63" stroke-width="1.6" stroke-linejoin="round"/>
+            <rect x="12.8" y="18" width="4.4" height="9" fill="#B89150"/>
+          </svg>
+          <span>Новостройки Москвы<small>Подбор квартир</small></span>
+        </a>
+        <p>Подбор новостроек в Москве и Подмосковье. Спокойно, прозрачно, на вашей стороне.</p>
+      </div>
+      <div class="foot-col">
+        <h5>Навигация</h5>
+        <a href="#how">Как работаем</a>
+        <a href="#segments">Сегменты</a>
+        <a href="#why">Почему мы</a>
+      </div>
+      <div class="foot-col">
+        <h5>Контакты</h5>
+        <a href="tel:+79162988527">+7 916 298-85-27</a>
+        <a href="mailto:vl1805@bk.ru">vl1805@bk.ru</a>
+        <a href="https://t.me/vlad18005" target="_blank" rel="noopener">Telegram @vlad18005</a>
+        <a href="https://yandex.ru/maps/?text=Москва, Страстной бульвар, 6с1" target="_blank" rel="noopener" class="foot-addr">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1C4.5 1 2.5 3 2.5 5.5C2.5 9 7 13 7 13C7 13 11.5 9 11.5 5.5C11.5 3 9.5 1 7 1Z" stroke="#B89150" stroke-width="1.3" stroke-linejoin="round"/><circle cx="7" cy="5.5" r="1.6" stroke="#B89150" stroke-width="1.3"/></svg>
+          <span>Москва, Страстной б-р, 6с1</span>
+        </a>
+        <p>Ежедневно 9:00–21:00</p>
+      </div>
+    </div>
+    <div class="copy">© 2026 Новостройки Москвы. Подбор квартир. Не является публичной офертой.</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var nm=document.getElementById('nm'),ph=document.getElementById('ph'),bg=document.getElementById('bg');
+  var btn=document.getElementById('submitBtn');
+  var errNm=document.getElementById('errNm'),errPh=document.getElementById('errPh'),fail=document.getElementById('formFail');
+
+  // ⬇⬇⬇ ВСТАВЬТЕ СЮДА ДАННЫЕ ВАШЕГО TELEGRAM-БОТА (см. instrukciya-github.txt)
+  // TG_TOKEN  — токен бота от @BotFather, например "7123456789:AAH..."
+  // TG_CHAT   — ваш chat id (число), например "123456789"
+  // Пока поля пустые — форма работает в демо-режиме (показывает «Заявка принята», но НЕ отправляет).
+  var TG_TOKEN = "";
+  var TG_CHAT  = "";
+
+  function validPhone(v){ return (v.replace(/\D/g,'').length >= 10); }
+
+  function check(){
+    var okName = nm.value.trim().length >= 2;
+    var okPhone = validPhone(ph.value);
+    btn.disabled = !(okName && okPhone);
+    return {okName:okName, okPhone:okPhone};
+  }
+  [nm,ph].forEach(function(el){
+    el.addEventListener('input', function(){
+      check();
+      if(el===nm && nm.value.trim().length>=2){nm.classList.remove('invalid');errNm.classList.remove('show');}
+      if(el===ph && validPhone(ph.value)){ph.classList.remove('invalid');errPh.classList.remove('show');}
+    });
+  });
+  check();
+
+  btn.addEventListener('click', function(){
+    var r = check();
+    if(!r.okName){nm.classList.add('invalid');errNm.classList.add('show');}
+    if(!r.okPhone){ph.classList.add('invalid');errPh.classList.add('show');}
+    if(!(r.okName && r.okPhone)) return;
+
+    fail.classList.remove('show');
+    btn.disabled = true; btn.textContent = 'Отправляем…';
+
+    var text =
+      "\uD83C\uDFE0 Новая заявка с лендинга «Новостройки Москвы»\n\n" +
+      "\uD83D\uDC64 Имя: " + nm.value.trim() + "\n" +
+      "\uD83D\uDCDE Телефон: " + ph.value.trim() + "\n" +
+      "\uD83D\uDCB0 Бюджет: " + (bg.value || "не указан");
+
+    function done(){ document.getElementById('formInner').style.display='none'; document.getElementById('formOk').classList.add('show'); }
+
+    if(!TG_TOKEN || !TG_CHAT){ // демо-режим без настроенного бота
+      setTimeout(done, 500); return;
+    }
+    fetch("https://api.telegram.org/bot" + TG_TOKEN + "/sendMessage", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ chat_id: TG_CHAT, text: text })
+    })
+      .then(function(res){ if(!res.ok) throw new Error("bad"); done(); })
+      .catch(function(){ btn.disabled=false; btn.textContent="Получить подборку"; fail.classList.add("show"); });
+  });
+})();
+
+/* ---------- ИПОТЕЧНЫЙ КАЛЬКУЛЯТОР ---------- */
+(function(){
+  var price=document.getElementById('price'), down=document.getElementById('down'), term=document.getElementById('term');
+  if(!price) return;
+  var vPrice=document.getElementById('vPrice'), vDown=document.getElementById('vDown'), vTerm=document.getElementById('vTerm'), vRate=document.getElementById('vRate');
+  var payout=document.getElementById('payout'), loanOut=document.getElementById('loanOut'), overOut=document.getElementById('overOut');
+  var choose=document.getElementById('progChoose');
+  var rate=6, cap=12000000;
+
+  function fmt(n){ return Math.round(n).toLocaleString('ru-RU')+' ₽'; }
+  function yearsWord(n){ var a=n%10,b=n%100; if(a===1&&b!==11)return n+' год'; if(a>=2&&a<=4&&(b<10||b>=20))return n+' года'; return n+' лет'; }
+
+  function calc(){
+    var P=+price.value, dPct=+down.value, yrs=+term.value;
+    var downSum=P*dPct/100;
+    var loan=Math.max(P-downSum,0);
+    // льготная ставка применяется к части в пределах лимита, превышение — по рыночной
+    var market=19;
+    var monthly;
+    if(cap>0 && loan>cap){
+      var lp=monthlyPay(cap,rate,yrs);
+      var mp=monthlyPay(loan-cap,market,yrs);
+      monthly=lp+mp;
+    } else {
+      monthly=monthlyPay(loan,rate,yrs);
+    }
+    var total=monthly*yrs*12;
+    var over=total-loan;
+
+    vPrice.textContent=fmt(P);
+    vDown.textContent=fmt(downSum)+' · '+dPct+'%';
+    vTerm.textContent=yearsWord(yrs);
+    vRate.textContent=rate.toString().replace('.',',')+(cap>0&&loan>cap?'% + рыночная':'%')+(rate===19?' (от)':'');
+    if(loan<=0){ payout.innerHTML='0 <span>₽/мес</span>'; loanOut.textContent='0 ₽'; overOut.textContent='0 ₽'; return; }
+    payout.innerHTML=fmt(monthly).replace(' ₽','')+' <span>₽/мес</span>';
+    loanOut.textContent=fmt(loan);
+    overOut.textContent=fmt(over);
+  }
+  function monthlyPay(loan,annualRate,years){
+    if(loan<=0) return 0;
+    var i=annualRate/100/12, n=years*12;
+    if(i===0) return loan/n;
+    return loan*i*Math.pow(1+i,n)/(Math.pow(1+i,n)-1);
+  }
+
+  [price,down,term].forEach(function(el){ el.addEventListener('input',calc); });
+  choose.querySelectorAll('button').forEach(function(b){
+    b.addEventListener('click',function(){
+      choose.querySelectorAll('button').forEach(function(x){x.classList.remove('active')});
+      b.classList.add('active');
+      rate=+b.dataset.rate; cap=+b.dataset.cap;
+      calc();
+    });
+  });
+  calc();
+})();
+
+/* ---------- ПЛАВНОЕ ПОЯВЛЕНИЕ СЕКЦИЙ ---------- */
+(function(){
+  var els=document.querySelectorAll('.reveal');
+  if(!('IntersectionObserver' in window)){ els.forEach(function(e){e.classList.add('in')}); return; }
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+  },{threshold:.12});
+  els.forEach(function(e){ io.observe(e); });
+})();
+</script>
+</body>
+</html>
