@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Подбор новостройки в Москве — за 2 минуты</title>
+<style>
+  :root{
+    --navy:#0E2A47;
+    --navy-deep:#091d33;
+    --gold:#C9A24B;
+    --gold-soft:#E2C57E;
+    --cream:#F6F2E9;
+    --ink:#13212F;
+    --grey:#8A98A6;
+    --line:rgba(201,162,75,.28);
+    --ok:#2E8B6E;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:"Segoe UI",-apple-system,Roboto,Helvetica,Arial,sans-serif;
+    background:
+      radial-gradient(1200px 600px at 80% -10%, rgba(201,162,75,.10), transparent 60%),
+      linear-gradient(160deg,var(--navy) 0%,var(--navy-deep) 100%);
+    color:var(--cream);
+    min-height:100vh;
+    display:flex;align-items:center;justify-content:center;
+    padding:20px;
+    line-height:1.5;
+  }
+
+  .card{
+    width:100%;max-width:560px;
+    background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.01));
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:34px 30px 30px;
+    box-shadow:0 30px 80px rgba(0,0,0,.45);
+    backdrop-filter:blur(6px);
+  }
+
+  /* header */
+  .brand{display:flex;align-items:center;gap:10px;margin-bottom:22px}
+  .brand-mark{
+    width:34px;height:34px;border-radius:8px;flex:none;
+    background:linear-gradient(135deg,var(--gold),var(--gold-soft));
+    display:flex;align-items:center;justify-content:center;
+    color:var(--navy-deep);font-weight:800;font-size:18px;
+  }
+  .brand-name{font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-soft)}
+  .brand-name b{color:var(--cream);font-weight:600}
+
+  /* progress */
+  .progress{height:5px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden;margin-bottom:8px}
+  .progress-bar{height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--gold),var(--gold-soft));transition:width .4s cubic-bezier(.4,0,.2,1)}
+  .progress-label{font-size:12px;color:var(--grey);margin-bottom:24px;letter-spacing:.04em}
+
+  /* step */
+  .step{display:none;animation:fade .35s ease}
+  .step.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  .eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+  .q{font-size:23px;font-weight:700;color:#fff;margin-bottom:22px;letter-spacing:-.01em}
+
+  .options{display:grid;gap:11px}
+  .opt{
+    text-align:left;width:100%;cursor:pointer;
+    background:rgba(255,255,255,.035);
+    border:1px solid rgba(255,255,255,.10);
+    color:var(--cream);
+    padding:16px 18px;border-radius:13px;
+    font-size:16px;font-family:inherit;
+    transition:all .18s ease;
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+  }
+  .opt:hover{border-color:var(--gold);background:rgba(201,162,75,.10);transform:translateX(3px)}
+  .opt .tick{opacity:0;color:var(--gold);font-weight:800;transition:opacity .15s}
+  .opt.selected{border-color:var(--gold);background:rgba(201,162,75,.16)}
+  .opt.selected .tick{opacity:1}
+  .opt.hot::after{content:"🔥";font-size:15px}
+
+  /* grid for districts */
+  .grid2{grid-template-columns:1fr 1fr}
+  @media(max-width:440px){.grid2{grid-template-columns:1fr}}
+
+  /* nav */
+  .nav{display:flex;justify-content:space-between;align-items:center;margin-top:22px}
+  .back{
+    background:none;border:none;color:var(--grey);cursor:pointer;
+    font-size:14px;font-family:inherit;padding:8px 4px;
+    transition:color .15s;
+  }
+  .back:hover{color:var(--cream)}
+  .back[hidden]{visibility:hidden}
+
+  /* final form */
+  .final-head{text-align:center;margin-bottom:8px}
+  .final-badge{
+    display:inline-flex;align-items:center;gap:8px;
+    background:rgba(46,139,110,.14);border:1px solid rgba(46,139,110,.4);
+    color:#7fd9b9;padding:7px 14px;border-radius:99px;font-size:13px;font-weight:600;
+    margin-bottom:18px;
+  }
+  .final-count{font-size:34px;font-weight:800;color:var(--gold-soft);margin:6px 0 2px}
+  .final-sub{color:var(--grey);font-size:15px;margin-bottom:24px;text-align:center}
+
+  .field{margin-bottom:13px}
+  .field label{display:block;font-size:13px;color:var(--gold-soft);margin-bottom:6px;letter-spacing:.03em}
+  .field input{
+    width:100%;padding:15px 16px;border-radius:12px;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.14);
+    color:#fff;font-size:16px;font-family:inherit;
+    transition:border-color .15s;
+  }
+  .field input::placeholder{color:#6f7d8b}
+  .field input:focus{outline:none;border-color:var(--gold)}
+  .field input.err{border-color:#d9714e}
+
+  .submit{
+    width:100%;margin-top:8px;padding:17px;border:none;border-radius:13px;cursor:pointer;
+    background:linear-gradient(135deg,var(--gold),var(--gold-soft));
+    color:var(--navy-deep);font-size:17px;font-weight:800;font-family:inherit;
+    letter-spacing:.01em;transition:transform .15s,box-shadow .15s;
+    box-shadow:0 12px 30px rgba(201,162,75,.25);
+  }
+  .submit:hover{transform:translateY(-2px);box-shadow:0 16px 38px rgba(201,162,75,.35)}
+  .submit:disabled{opacity:.6;cursor:wait;transform:none}
+
+  .consent{font-size:11.5px;color:var(--grey);text-align:center;margin-top:14px;line-height:1.45}
+  .consent a{color:var(--gold-soft)}
+
+  /* success */
+  .done{display:none;text-align:center;padding:14px 4px}
+  .done.active{display:block;animation:fade .4s ease}
+  .done-circle{
+    width:72px;height:72px;border-radius:50%;margin:0 auto 20px;
+    background:rgba(46,139,110,.16);border:2px solid var(--ok);
+    display:flex;align-items:center;justify-content:center;font-size:36px;
+  }
+  .done h2{color:#fff;font-size:24px;margin-bottom:10px}
+  .done p{color:var(--grey);font-size:15px;max-width:380px;margin:0 auto}
+</style>
+</head>
+<body>
+<div class="card">
+
+  <div class="brand">
+    <div class="brand-mark">Н</div>
+    <div class="brand-name"><b>Новостройки</b> Москвы · подбор под ключ</div>
+  </div>
+
+  <!-- progress -->
+  <div class="progress"><div class="progress-bar" id="bar"></div></div>
+  <div class="progress-label" id="plabel">Вопрос 1 из 5</div>
+
+  <!-- QUIZ -->
+  <form id="quiz" novalidate>
+
+    <!-- Q1 -->
+    <div class="step active" data-step="1">
+      <div class="eyebrow">Параметры квартиры</div>
+      <div class="q">Сколько комнат рассматриваете?</div>
+      <div class="options" data-key="rooms">
+        <button type="button" class="opt" data-val="Студия">Студия<span class="tick">✓</span></button>
+        <button type="button" class="opt" data-val="1 комната">1 комната<span class="tick">✓</span></button>
+        <button type="button" class="opt" data-val="2 комнаты">2 комнаты<span class="tick">✓</span></button>
+        <button type="button" class="opt" data-val="3+ комнаты">3 и больше<span class="tick">✓</span></button>
+        <button type="button" class="opt" data-val="Ещё не решил">Пока не решил<span class="tick">✓</span></button>
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="step" data-step="2">
+      <div class="eyebrow">Бюджет</div>
+      <div class="q">На какую сумму ориентируетесь?</div>
+      <div class="options" data-key="budget">
+        <button type="button" class="opt" data-val="до 10 млн ₽">до 10 млн ₽<span class="tick">✓</span></button>
+        <button type="button" class="opt" data-val="10–15 млн ₽">10–15 млн ₽<span class="tick">✓</span></button>
+        <button type="button" class="opt" data-val="15–25 млн ₽">15–25 млн ₽<span class="tick">✓</span></button>
+        <button type="button" class="opt" data-val="от 25 млн ₽">от 25 млн ₽<span class="tick">✓</span></button>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="step" data-step="3">
+      <div class="eyebrow">Способ покупки</div>
+      <div class="q">Как планируете оплачивать?</div>
+      <div class="options" data-key="payment">
+        <button type="button" class="opt" data-val="Ипотека">Ипотека<span class="tick">✓</span></button>
+        <button type="button" class="opt" data-val="Наличные / без ипотеки">Наличными, без ипотеки<span class="tick">✓</span></button>
+        <button type="button" class="opt" data-val="Trade-in (есть что продать)">Trade-in — сдаю старую квартиру<span class="tick">✓</span></button>
+        <button type="button" class="opt" data-val="Рассрочка от застройщика">Рассрочка от застройщика<span class="tick">✓</span></button>
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="step" data-step="4">
+      <div class="eyebrow">Локация</div>
+      <div class="q">Какой район интересует?</div>
+      <div class="options grid2" data-key="district">
+        <button type="button" class="opt" data-val="ЦАО (центр)">Центр (ЦАО)<span class="tick">✓</span></button>
+        <button type="button" class="opt" data-val="САО / СВАО (север)">Север<span class="tick">✓</span></button>
+        <button type="button" class="opt" data-val="ЮАО / ЮВАО (юг)">Юг<span class="tick">✓</span></button>
+        <button type="button" class="opt" data-val="ЗАО / ЮЗАО (запад)">Запад<span class="tick">✓</span></button>
+        <button type="button" class="opt" data-val="ВАО (восток)">Восток<span class="tick">✓</span></button>
+        <button type="button" class="opt" data-val="Новая Москва">Новая Москва<span class="tick">✓</span></button>
+        <button type="button" class="opt" data-val="Не важно, главное — цена и условия" style="grid-column:1/-1">Не важно — главное цена и условия<span class="tick">✓</span></button>
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="step" data-step="5">
+      <div class="eyebrow">Сроки</div>
+      <div class="q">Когда планируете покупку?</div>
+      <div class="options" data-key="timing">
+        <button type="button" class="opt hot" data-val="🔥 В ближайший месяц">В ближайший месяц<span class="tick">✓</span></button>
+        <button type="button" class="opt" data-val="Через 1–3 месяца">Через 1–3 месяца<span class="tick">✓</span></button>
+        <button type="button" class="opt" data-val="Пока изучаю рынок">Пока просто изучаю рынок<span class="tick">✓</span></button>
+      </div>
+    </div>
+
+    <!-- FINAL: contact -->
+    <div class="step" data-step="6">
+      <div class="final-head">
+        <span class="final-badge">✓ Подбор готов</span>
+        <div class="final-count" id="cnt">12 вариантов</div>
+        <div class="final-sub">подобрали под ваши параметры. Куда отправить подборку?</div>
+      </div>
+      <div class="field">
+        <label for="name">Как к вам обращаться</label>
+        <input id="name" type="text" placeholder="Имя" autocomplete="name">
+      </div>
+      <div class="field">
+        <label for="phone">Телефон для связи</label>
+        <input id="phone" type="tel" placeholder="+7 (___) ___-__-__" autocomplete="tel" inputmode="tel">
+      </div>
+      <button type="submit" class="submit" id="send">Получить подборку</button>
+      <div class="consent">
+        Нажимая кнопку, вы соглашаетесь на обработку персональных данных
+        в соответствии с <a href="#">политикой конфиденциальности</a>.
+      </div>
+    </div>
+  </form>
+
+  <!-- success screen -->
+  <div class="done" id="done">
+    <div class="done-circle">✓</div>
+    <h2>Заявка принята!</h2>
+    <p>Подобрал варианты под ваши параметры. Свяжусь в ближайшее время и пришлю подборку. Если удобнее в Telegram — напишите мне там же.</p>
+  </div>
+
+  <!-- nav -->
+  <div class="nav" id="nav">
+    <button type="button" class="back" id="back" hidden>← Назад</button>
+    <span></span>
+  </div>
+</div>
+
+<script>
+/* ===========================================================
+   НАСТРОЙКА — вставь свои значения (как на основном лендинге)
+   =========================================================== */
+const BOT_TOKEN = "8941311923:AAFNkZsmKEIDfIlQ7fWjTnINni9EMrpS7x0";      // например 8544...:AA...
+const CHAT_ID   = "8594332486";             // твой chat id (из памяти)
+/* =========================================================== */
+
+const TOTAL = 5;
+const answers = {};
+let step = 1;
+
+const bar    = document.getElementById('bar');
+const plabel = document.getElementById('plabel');
+const backBtn= document.getElementById('back');
+const steps  = [...document.querySelectorAll('.step')];
+
+function show(n){
+  steps.forEach(s=>s.classList.toggle('active', +s.dataset.step===n));
+  step=n;
+  const pct = Math.min((n-1)/TOTAL*100,100);
+  bar.style.width = pct+'%';
+  if(n<=TOTAL){ plabel.textContent = `Вопрос ${n} из ${TOTAL}`; }
+  else{ plabel.textContent = 'Последний шаг'; bar.style.width='100%'; }
+  backBtn.hidden = (n===1);
+  // dynamic "count" by budget — ощущение реального подбора
+  if(n===6){
+    const map={'до 10 млн ₽':9,'10–15 млн ₽':14,'15–25 млн ₽':11,'от 25 млн ₽':7};
+    const c = map[answers.budget] || 12;
+    document.getElementById('cnt').textContent = c+' вариант'+(c%10===1&&c!==11?'':(c%10>=2&&c%10<=4&&(c<10||c>20)?'а':'ов'));
+  }
+}
+
+// option click → save & auto-advance
+document.querySelectorAll('.options').forEach(group=>{
+  group.addEventListener('click', e=>{
+    const opt = e.target.closest('.opt');
+    if(!opt) return;
+    group.querySelectorAll('.opt').forEach(o=>o.classList.remove('selected'));
+    opt.classList.add('selected');
+    answers[group.dataset.key] = opt.dataset.val;
+    setTimeout(()=>show(step+1), 260);
+  });
+});
+
+backBtn.addEventListener('click', ()=>{ if(step>1) show(step-1); });
+
+// phone mask (light)
+const phone = document.getElementById('phone');
+phone.addEventListener('input', ()=>{
+  let d = phone.value.replace(/\D/g,'');
+  if(d.startsWith('8')) d='7'+d.slice(1);
+  if(!d.startsWith('7')) d='7'+d;
+  d=d.slice(0,11);
+  let out='+7';
+  if(d.length>1) out+=' ('+d.slice(1,4);
+  if(d.length>=4) out+=') '+d.slice(4,7);
+  if(d.length>=7) out+='-'+d.slice(7,9);
+  if(d.length>=9) out+='-'+d.slice(9,11);
+  phone.value=out;
+});
+
+// submit
+document.getElementById('quiz').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const name = document.getElementById('name');
+  const digits = phone.value.replace(/\D/g,'');
+  let ok=true;
+  if(!name.value.trim()){ name.classList.add('err'); ok=false } else name.classList.remove('err');
+  if(digits.length<11){ phone.classList.add('err'); ok=false } else phone.classList.remove('err');
+  if(!ok) return;
+
+  const btn=document.getElementById('send');
+  btn.disabled=true; btn.textContent='Отправляю…';
+
+  const hot = (answers.timing||'').includes('🔥');
+  const msg =
+`${hot?'🔥 ГОРЯЧИЙ ЛИД':'🆕 Заявка с квиза'} — Новостройки
+
+👤 ${name.value.trim()}
+📞 ${phone.value}
+
+🏠 Комнат: ${answers.rooms||'—'}
+💰 Бюджет: ${answers.budget||'—'}
+💳 Оплата: ${answers.payment||'—'}
+📍 Район: ${answers.district||'—'}
+⏱ Срок: ${answers.timing||'—'}`;
+
+  try{
+    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({chat_id:CHAT_ID,text:msg})
+    });
+  }catch(err){/* показываем успех в любом случае, лид не теряем визуально */}
+
+  document.getElementById('quiz').style.display='none';
+  document.getElementById('nav').style.display='none';
+  document.getElementById('done').classList.add('active');
+  bar.style.width='100%';
+  plabel.style.display='none';
+});
+
+show(1);
+</script>
+</body>
+</html>
