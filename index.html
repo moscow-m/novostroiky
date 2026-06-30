@@ -318,7 +318,7 @@ footer{border-top:1px solid var(--line);padding:52px 0 42px;background:var(--pap
     </div>
     <div class="steps">
       <div class="step"><span class="num">Шаг 01</span><h3>Бриф</h3><p>Обсуждаем бюджет, район, сроки и приоритеты. 15 минут разговора экономят недели поисков.</p></div>
-      <div class="step"><span class="num">Шаг 02</span><h3>Подборка</h3><p>Готовим 4–5 проверенных ЖК с честным сравнением цен, рисков и перспектив.</p></div>
+      <div class="step"><span class="num">Шаг 02</span><h3>Подборка</h3><p>Готовим 3–5 проверенных ЖК с честным сравнением цен, рисков и перспектив.</p></div>
       <div class="step"><span class="num">Шаг 03</span><h3>Показы</h3><p>Организуем визиты и переговоры с застройщиком. Проверяем документы и условия для вас.</p></div>
       <div class="step"><span class="num">Шаг 04</span><h3>Сделка</h3><p>Сопровождаем ДДУ, ипотеку и регистрацию. Остаёмся на связи до получения ключей.</p></div>
     </div>
@@ -393,16 +393,17 @@ footer{border-top:1px solid var(--line);padding:52px 0 42px;background:var(--pap
           <div class="prog-choose" id="progChoose">
             <button data-rate="6"  data-cap="12000000" class="active">Семейная<span class="r">6%</span></button>
             <button data-rate="6"  data-cap="9000000">IT*<span class="r">6%</span></button>
-            <button data-rate="17" data-cap="0">Рыночная<span class="r">от 17%</span></button>
-            <button data-manual="1" data-cap="0">Своя<span class="r">ставка</span></button>
+            <button data-rate="19" data-cap="0">Рыночная<span class="r">от 19%</span></button>
+            <button data-manual="1" data-cap="0">Субсидированная<span class="r">ставка</span></button>
           </div>
         </div>
+
         <div class="calc-field" id="rateField" style="display:none">
-          <div class="row"><label>Своя процентная ставка</label><span class="val" id="vRateManual">15,0%</span></div>
+          <div class="row"><label>Субсидированная процентная ставка</label><span class="val" id="vRateManual">15,0%</span></div>
           <input type="range" id="rate" min="0.1" max="30" step="0.1" value="15">
           <div class="scale"><span>0,1%</span><span>30%</span></div>
         </div>
-        
+
         <div class="calc-out">
           <div class="pay-label">Ежемесячный платёж</div>
           <div class="pay" id="payout">— <span>₽/мес</span></div>
@@ -472,7 +473,7 @@ footer{border-top:1px solid var(--line);padding:52px 0 42px;background:var(--pap
                 <div class="prog-logo" style="background:#1B3A63">Р</div>
                 <div class="prog-name">Рыночная ипотека<small>Базовые программы банков</small></div>
               </div>
-              <div class="prog-rate"><div class="rate-n">~17%</div><div class="rate-l">от, годовых</div></div>
+              <div class="prog-rate"><div class="rate-n">~19%</div><div class="rate-l">от, годовых</div></div>
             </div>
             <div class="prog-meta">
               <div>Взнос<b>от 20%</b></div>
@@ -507,7 +508,7 @@ footer{border-top:1px solid var(--line);padding:52px 0 42px;background:var(--pap
   </div>
 </section>
 
-
+<!-- TRUST / СЕРТИФИКАТ ПАРТНЁРА -->
 <section class="block reveal" id="partner" style="padding-top:0">
   <div class="wrap">
     <div class="sec-head" style="max-width:720px">
@@ -687,19 +688,22 @@ footer{border-top:1px solid var(--line);padding:52px 0 42px;background:var(--pap
   var vPrice=document.getElementById('vPrice'), vDown=document.getElementById('vDown'), vTerm=document.getElementById('vTerm'), vRate=document.getElementById('vRate');
   var payout=document.getElementById('payout'), loanOut=document.getElementById('loanOut'), overOut=document.getElementById('overOut');
   var choose=document.getElementById('progChoose');
-  var rate=6, cap=12000000;
+  var rateField=document.getElementById('rateField'), rateSlider=document.getElementById('rate'), vRateManual=document.getElementById('vRateManual');
+  var rate=6, cap=12000000, manual=false;
 
   function fmt(n){ return Math.round(n).toLocaleString('ru-RU')+' ₽'; }
   function yearsWord(n){ var a=n%10,b=n%100; if(a===1&&b!==11)return n+' год'; if(a>=2&&a<=4&&(b<10||b>=20))return n+' года'; return n+' лет'; }
+  function rateStr(r){ return r.toString().replace('.',',')+'%'; }
 
   function calc(){
     var P=+price.value, dPct=+down.value, yrs=+term.value;
     var downSum=P*dPct/100;
     var loan=Math.max(P-downSum,0);
-    // льготная ставка применяется к части в пределах лимита, превышение — по рыночной
+    // в ручном режиме и на рыночной — единая ставка на всю сумму;
+    // на льготных (cap>0) — превышение лимита считается по рыночной 19%
     var market=19;
     var monthly;
-    if(cap>0 && loan>cap){
+    if(!manual && cap>0 && loan>cap){
       var lp=monthlyPay(cap,rate,yrs);
       var mp=monthlyPay(loan-cap,market,yrs);
       monthly=lp+mp;
@@ -712,7 +716,11 @@ footer{border-top:1px solid var(--line);padding:52px 0 42px;background:var(--pap
     vPrice.textContent=fmt(P);
     vDown.textContent=fmt(downSum)+' · '+dPct+'%';
     vTerm.textContent=yearsWord(yrs);
-    vRate.textContent=rate.toString().replace('.',',')+(cap>0&&loan>cap?'% + рыночная':'%')+(rate===19?' (от)':'');
+    if(manual){
+      vRate.textContent=rateStr(rate);
+    } else {
+      vRate.textContent=rateStr(rate)+(cap>0&&loan>cap?' + рыночная':'')+(rate===19?' (от)':'');
+    }
     if(loan<=0){ payout.innerHTML='0 <span>₽/мес</span>'; loanOut.textContent='0 ₽'; overOut.textContent='0 ₽'; return; }
     payout.innerHTML=fmt(monthly).replace(' ₽','')+' <span>₽/мес</span>';
     loanOut.textContent=fmt(loan);
@@ -726,11 +734,27 @@ footer{border-top:1px solid var(--line);padding:52px 0 42px;background:var(--pap
   }
 
   [price,down,term].forEach(function(el){ el.addEventListener('input',calc); });
+
+  rateSlider.addEventListener('input',function(){
+    rate=+rateSlider.value;
+    vRateManual.textContent=rateStr(rate);
+    calc();
+  });
+
   choose.querySelectorAll('button').forEach(function(b){
     b.addEventListener('click',function(){
       choose.querySelectorAll('button').forEach(function(x){x.classList.remove('active')});
       b.classList.add('active');
-      rate=+b.dataset.rate; cap=+b.dataset.cap;
+      if(b.dataset.manual){
+        manual=true; cap=0;
+        rateField.style.display='';
+        rate=+rateSlider.value;
+        vRateManual.textContent=rateStr(rate);
+      } else {
+        manual=false;
+        rateField.style.display='none';
+        rate=+b.dataset.rate; cap=+b.dataset.cap;
+      }
       calc();
     });
   });
